@@ -1,11 +1,12 @@
+"""Get the works of a researcher from ORCID
+"""
+
 import requests
 import datetime
-from model import Work
+from .model import Work
 from argparse import ArgumentParser
 
 BASE_URL = "https://pub.orcid.org"
-arg_parser = ArgumentParser()
-arg_parser.add_argument("--researcher_id", "-r", help="researcher's ORCID")
 
 def get_works(researcher_id: str, api_version: str ="v3.0") -> dict:
     """Get the works of a researcher from ORCID
@@ -18,23 +19,6 @@ def get_works(researcher_id: str, api_version: str ="v3.0") -> dict:
         dict: JSON response from ORCID API
     """
     url = f"{BASE_URL}/{api_version}/{researcher_id}/works"
-    headers = {
-        "Accept": "application/json"
-    }
-    response = requests.get(url, headers=headers)
-    return response.json()
-
-def get_record(researcher_id: str, api_version: str ="v3.0") -> dict:
-    """Get the record of a researcher from ORCID
-
-    Args:
-        researcher_id (str): researcher's ORCID
-        api_version (str, optional): ORCID API version. Defaults to "v3.0".
-
-    Returns:
-        dict: JSON response from ORCID API
-    """
-    url = f"{BASE_URL}/{api_version}/{researcher_id}/record"
     headers = {
         "Accept": "application/json"
     }
@@ -127,10 +111,26 @@ def collect_works(researcher_id: str) -> list:
     works = sorted(works, key=lambda x: x.created_at, reverse=True)
     return works
 
+def out(filepath: str, works: list[Work]):
+    """Output the works to a file
+
+    Args:
+        filepath (str): file path
+        works (list[Work]): list of Work objects
+    """
+    with open(filepath, "w") as f:
+        f.write("doi,title,created_at,journal\n")
+        for work in works:
+            f.write(f"{work.doi},{work.title},{work.created_at},{work.journal}\n")
+
 if __name__ == "__main__":
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("--researcher_id", "-r", help="researcher's ORCID")
+    arg_parser.add_argument("--out", "-o", help="output file path")
     args = arg_parser.parse_args()
     researcher_id = args.researcher_id
+    filepath = args.out
+    
     works = collect_works(researcher_id)
-    for work in works:
-        print(work)
-        
+    out(filepath, works)
+    
