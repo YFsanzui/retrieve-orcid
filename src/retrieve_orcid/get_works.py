@@ -121,7 +121,7 @@ def out(works: list[Work], filepath: str):
     with open(filepath, "w") as f:
         f.write("doi,title,created_at,journal\n")
         for work in works:
-            f.write(f"{work.doi},{work.title},{work.created_at},{work.journal}\n")
+            f.write(f'"{work.doi}","{work.title}","{work.created_at}","{work.journal}"\n')
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser()
