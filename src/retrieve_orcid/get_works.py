@@ -111,12 +111,12 @@ def collect_works(researcher_id: str) -> list:
     works = sorted(works, key=lambda x: x.created_at, reverse=True)
     return works
 
-def out(filepath: str, works: list[Work]):
+def out(works: list[Work], filepath: str):
     """Output the works to a file
 
     Args:
-        filepath (str): file path
         works (list[Work]): list of Work objects
+        filepath (str): file path
     """
     with open(filepath, "w") as f:
         f.write("doi,title,created_at,journal\n")
@@ -132,5 +132,5 @@ if __name__ == "__main__":
     filepath = args.out
     
     works = collect_works(researcher_id)
-    out(filepath, works)
+    out(works, filepath)
     
