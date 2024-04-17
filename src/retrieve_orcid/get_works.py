@@ -104,8 +104,9 @@ def get_authors(work: dict) -> str:
     crossref_work = crossref_works()
     paper = crossref_work.doi(doi_url)
     authors = ""
-    if paper['author'] is None:
-        return None
+    if type(paper['author']) is not list:
+        authors += "No Data"
+        return authors
     else:
         for author in paper['author']:
             first_name = author['family']
