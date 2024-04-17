@@ -4,6 +4,7 @@
 import requests
 import datetime
 from .model import Work
+from crossref.restful import Works as crossref_works
 from argparse import ArgumentParser
 
 BASE_URL = "https://pub.orcid.org"
@@ -89,6 +90,30 @@ def get_journal_title(work: dict) -> str:
         return None
     return work["work-summary"][0]["journal-title"]["value"]
 
+def get_authors(work: dict) -> str:
+    """Get the names of authors of a work
+
+    Args:
+        work (dict): work response from ORCID API
+
+    Returns:
+        str: names of authors of the work
+    """
+    
+    doi_url = 'https://doi.org/' + str(get_doi(work))
+    crossref_work = crossref_works()
+    paper = crossref_work.doi(doi_url)
+    authors = ""
+
+    for author in paper['author']:
+        first_name = author['family']
+        given_name = author['given']
+        authors += f'{given_name} {first_name}, '
+
+    return authors[:-2]
+    
+
+
 def collect_works(researcher_id: str) -> list:
     """Collect the works of a researcher from ORCID
 
@@ -105,7 +130,8 @@ def collect_works(researcher_id: str) -> list:
         title = get_title(work)
         created_at = get_created_at_date(work)
         journal = get_journal_title(work)
-        work = Work(doi, title, created_at, journal)
+        authors = get_authors(work)
+        work = Work(doi, title, created_at, journal, authors)
         works.append(work)
         
     works = sorted(works, key=lambda x: x.created_at, reverse=True)
@@ -121,7 +147,7 @@ def out(works: list[Work], filepath: str):
     with open(filepath, "w") as f:
         f.write("doi,title,created_at,journal\n")
         for work in works:
-            f.write(f'"{work.doi}","{work.title}","{work.created_at}","{work.journal}"\n')
+            f.write(f'"{work.authors}","{work.doi}","{work.title}","{work.created_at}","{work.journal}"\n')
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser()

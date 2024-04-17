@@ -6,3 +6,4 @@ class Work:
     title: str
     created_at: str
     journal: str
+    authors: str
