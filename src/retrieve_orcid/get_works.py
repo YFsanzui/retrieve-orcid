@@ -153,7 +153,7 @@ def out(works: list[Work], filepath: str):
         filepath (str): file path
     """
     with open(filepath, "w") as f:
-        f.write("doi,title,created_at,journal\n")
+        f.write("authors,doi,title,created_at,journal\n")
         for work in works:
             f.write(f'"{work.authors}","{work.doi}","{work.title}","{work.created_at}","{work.journal}"\n')
 
