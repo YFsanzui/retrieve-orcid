@@ -6,7 +6,7 @@ Retrieve academic data stored in ORCID using the ORCID public API
 
 ## Installation
 ```bash
-pip install git+https://github.com/passive-radio/retrieve-orcid.git
+pip install git+https://github.com/passive-radio/retrieve-orcid.git -r requirements.txt
 ```
 
 ## How to use
