@@ -6,7 +6,7 @@ Retrieve academic data stored in ORCID using the ORCID public API
 
 ## Installation
 ```bash
-pip install git+https://github.com/yfsanzui/retrieve-orcid.git -r requirements.txt
+pip install git+https://github.com/yfsanzui/retrieve-orcid.git
 ```
 
 ## How to use
