@@ -99,21 +99,26 @@ def get_authors(work: dict) -> str:
     Returns:
         str: names of authors of the work
     """
-    
-    doi_url = 'https://doi.org/' + str(get_doi(work))
-    crossref_work = crossref_works()
-    paper = crossref_work.doi(doi_url)
     authors = ""
-    if 'author' not in paper.keys():
-        authors += "No Data"
-        return authors
+    
+    if get_doi(work) is None:
+        return "No Data"
+    
     else:
-        for author in paper['author']:
-            first_name = author['family']
-            given_name = author['given']
-            authors += f'{given_name} {first_name}, '
+        doi_url = 'https://doi.org/' + str(get_doi(work))
+        crossref_work = crossref_works()
+        paper = crossref_work.doi(doi_url)
+        
+        if 'author' not in paper.keys():
+            authors += "No Data"
+            return authors
+        else:
+            for author in paper['author']:
+                first_name = author['family']
+                given_name = author['given']
+                authors += f'{given_name} {first_name}, '
 
-        return authors[:-2]
+            return authors[:-2]
     
 
 
