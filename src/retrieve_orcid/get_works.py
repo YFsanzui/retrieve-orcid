@@ -104,7 +104,7 @@ def get_authors(work: dict) -> str:
     crossref_work = crossref_works()
     paper = crossref_work.doi(doi_url)
     authors = ""
-    if type(paper['author']) is not list:
+    if 'author' not in paper.keys():
         authors += "No Data"
         return authors
     else:
