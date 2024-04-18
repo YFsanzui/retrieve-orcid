@@ -38,8 +38,7 @@ def get_doi(work: dict) -> str:
     for external_id in work["external-ids"]["external-id"]:
         if external_id["external-id-type"] == "doi":
             return external_id["external-id-value"]
-        else:
-            return None
+        return None
 
 def get_created_at(work: dict) -> str:
     """Get the created_at of a work
@@ -102,7 +101,7 @@ def get_authors(work: dict) -> str:
     """
     authors = ""
     
-    if get_doi(work) is None:
+    if get_doi(work) == None:
         return "No Data"
     
     else:
@@ -110,7 +109,7 @@ def get_authors(work: dict) -> str:
         crossref_work = crossref_works()
         paper = crossref_work.doi(doi_url)
         
-        if 'author' not in paper.keys():
+        if 'author' != paper.keys():
             authors += "No Data"
             return authors
         else:
