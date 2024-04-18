@@ -37,7 +37,7 @@ def get_doi(work: dict) -> str:
     """
     for external_id in work["external-ids"]["external-id"]:
         if external_id["external-id-type"] == "doi":
-            return external_id["external-id-value"].replace('https://doi.org/', '')
+            return external_id["external-id-value"].replace('https://', '').replace('doi.org/', '')
         return None
 
 def get_created_at(work: dict) -> str:
