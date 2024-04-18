@@ -109,16 +109,22 @@ def get_authors(work: dict) -> str:
         crossref_work = crossref_works()
         paper = crossref_work.doi(doi_url)
         
-        if 'author' not in paper.keys():
+        if paper is not dict:
             authors += "No Data"
             return authors
-        else:
-            for author in paper['author']:
-                first_name = author['family']
-                given_name = author['given']
-                authors += f'{given_name} {first_name}, '
+        
+        else:            
+            if 'author' not in paper.keys():
+                authors += "No Data"
+                return authors
+            else:
+                for author in paper['author']:
+                    first_name = author['family']
+                    given_name = author['given']
+                    authors += f'{given_name} {first_name}, '
 
-            return authors[:-2]
+                return authors[:-2]
+
     
 
 
