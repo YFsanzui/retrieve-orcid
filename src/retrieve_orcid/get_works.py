@@ -38,7 +38,8 @@ def get_doi(work: dict) -> str:
     for external_id in work["external-ids"]["external-id"]:
         if external_id["external-id-type"] == "doi":
             return external_id["external-id-value"]
-    return None
+        else:
+            return None
 
 def get_created_at(work: dict) -> str:
     """Get the created_at of a work
