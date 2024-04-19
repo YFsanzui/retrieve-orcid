@@ -78,7 +78,7 @@ def get_published_date(work: dict) -> str:
     ret = work["work-summary"][0]["publication-date"]
     pub = {"Year" : ret["year"], "Month" : ret["month"], "Day" : ret["day"]}
     date = ""
-    for key in pub.keys:
+    for key in pub.keys():
         if pub[key] is None:
             date += '*/'
         else:
