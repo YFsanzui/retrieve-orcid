@@ -76,10 +76,15 @@ def get_published_date(work: dict) -> str:
         str: date of the work
     """
     ret = work["work-summary"][0]["publication-date"]
-    year = ret["year"]["value"]
-    month = ret["month"]["value"]
-    day = ret["day"]["value"]
-    return f'{year}-{month}-{day}'
+    pub = {"Year" : ret["year"], "Month" : ret["month"], "Day" : ret["day"]}
+    date = ""
+    for key in pub.keys:
+        if pub[key] is None:
+            date += '*/'
+        else:
+            date += f'{pub[key]["value"]}/'
+    return date[:-2]
+
 
 def get_title(work: dict) -> str:
     """Get the title of a work
