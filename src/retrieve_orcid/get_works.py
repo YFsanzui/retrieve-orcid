@@ -66,6 +66,22 @@ def get_created_at_date(work: dict) -> str:
     date_str = date.strftime('%Y-%m-%d %H:%M:%S')
     return date_str
 
+def get_published_date(work: dict) -> str:
+    """Get the created_at of a work
+
+    Args:
+        work (dict): work response from ORCID API
+
+    Returns:
+        str: date of the work
+    """
+    ret = work["work-summary"][0]["publication-date"]
+    year = ret["year"]
+    month = ret["month"]
+    day = ret["day"]
+    return f'{year}-{month}-{day}'
+
+
 def get_title(work: dict) -> str:
     """Get the title of a work
 
@@ -143,9 +159,10 @@ def collect_works(researcher_id: str) -> list:
         doi = get_doi(work)
         title = get_title(work)
         created_at = get_created_at_date(work)
+        published_day = get_published_date(work)
         journal = get_journal_title(work)
         authors = get_authors(work)
-        work = Work(doi, title, created_at, journal, authors)
+        work = Work(doi, title, created_at, published_day, journal, authors)
         works.append(work)
         
     works = sorted(works, key=lambda x: x.created_at, reverse=True)
@@ -159,9 +176,9 @@ def out(works: list[Work], filepath: str):
         filepath (str): file path
     """
     with open(filepath, "w") as f:
-        f.write("authors,doi,title,created_at,journal\n")
+        f.write("authors,doi,title,created_at, published_day, journal\n")
         for work in works:
-            f.write(f'"{work.authors}","{work.doi}","{work.title}","{work.created_at}","{work.journal}"\n')
+            f.write(f'"{work.authors}","{work.doi}","{work.title}","{work.created_at}","{work.published_day}","{work.journal}"\n')
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser()
