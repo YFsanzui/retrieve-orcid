@@ -76,9 +76,9 @@ def get_published_date(work: dict) -> str:
         str: date of the work
     """
     ret = work["work-summary"][0]["publication-date"]
-    year = ret["year"]
-    month = ret["month"]
-    day = ret["day"]
+    year = ret["year"]["value"]
+    month = ret["month"]["value"]
+    day = ret["day"]["value"]
     return f'{year}-{month}-{day}'
 
 def get_title(work: dict) -> str:
