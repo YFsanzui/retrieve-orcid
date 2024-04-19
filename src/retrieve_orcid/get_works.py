@@ -80,10 +80,10 @@ def get_published_date(work: dict) -> str:
     date = ""
     for key in pub.keys():
         if pub[key] is None:
-            date += '*/'
+            date += ''
         else:
             date += f'{pub[key]["value"]}/'
-    return date[:-2]
+    return date[:-1]
 
 
 def get_title(work: dict) -> str:
