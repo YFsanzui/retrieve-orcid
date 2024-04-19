@@ -81,7 +81,6 @@ def get_published_date(work: dict) -> str:
     day = ret["day"]
     return f'{year}-{month}-{day}'
 
-
 def get_title(work: dict) -> str:
     """Get the title of a work
 
@@ -165,7 +164,7 @@ def collect_works(researcher_id: str) -> list:
         work = Work(doi, title, created_at, published_day, journal, authors)
         works.append(work)
         
-    works = sorted(works, key=lambda x: x.created_at, reverse=True)
+    works = sorted(works, key=lambda x: x.published_day, reverse=True)
     return works
 
 def out(works: list[Work], filepath: str):
@@ -176,7 +175,7 @@ def out(works: list[Work], filepath: str):
         filepath (str): file path
     """
     with open(filepath, "w") as f:
-        f.write("authors,doi,title,created_at, published_day, journal\n")
+        f.write("authors,doi,title,created_at,published_day,journal\n")
         for work in works:
             f.write(f'"{work.authors}","{work.doi}","{work.title}","{work.created_at}","{work.published_day}","{work.journal}"\n')
 
